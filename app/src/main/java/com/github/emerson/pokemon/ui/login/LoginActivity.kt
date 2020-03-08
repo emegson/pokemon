@@ -1,11 +1,9 @@
 package com.github.emerson.pokemon.ui.login
 
 import android.app.Activity
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP
 import android.os.Bundle
-import androidx.annotation.StringRes
-import androidx.appcompat.app.AppCompatActivity
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -14,8 +12,12 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
-
+import androidx.annotation.StringRes
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.github.emerson.pokemon.R
+import com.github.emerson.pokemon.ui.main.MainActivity
 
 class LoginActivity : AppCompatActivity() {
 
@@ -40,11 +42,11 @@ class LoginActivity : AppCompatActivity() {
             // disable login button unless both username / password is valid
             login.isEnabled = loginState.isDataValid
 
-            if (loginState.usernameError != null) {
-                username.error = getString(loginState.usernameError)
+            loginState.usernameError?.let { usernameError ->
+                username.error = getString(usernameError)
             }
-            if (loginState.passwordError != null) {
-                password.error = getString(loginState.passwordError)
+            loginState.passwordError?.let { passwordError ->
+                password.error = getString(passwordError)
             }
         })
 
@@ -52,16 +54,18 @@ class LoginActivity : AppCompatActivity() {
             val loginResult = it ?: return@Observer
 
             loading.visibility = View.GONE
-            if (loginResult.error != null) {
-                showLoginFailed(loginResult.error)
+            loginResult.error?.let { errorCode ->
+                showLoginFailed(errorCode)
             }
-            if (loginResult.success != null) {
-                updateUiWithUser(loginResult.success)
+            loginResult.success?.let { success ->
+                updateUiWithUser(success)
             }
             setResult(Activity.RESULT_OK)
 
             //Complete and destroy login activity once successful
-            finish()
+            var intent = Intent(LoginActivity@ this, MainActivity::class.java)
+            intent.flags = FLAG_ACTIVITY_CLEAR_TOP
+            startActivity(intent);
         })
 
         username.afterTextChanged {

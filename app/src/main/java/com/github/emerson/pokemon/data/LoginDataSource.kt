@@ -2,6 +2,7 @@ package com.github.emerson.pokemon.data
 
 import com.github.emerson.pokemon.data.model.LoggedInUser
 import java.io.IOException
+import java.util.logging.Logger
 
 /**
  * Class that handles authentication w/ login credentials and retrieves user information.
@@ -9,17 +10,18 @@ import java.io.IOException
 class LoginDataSource {
 
     fun login(username: String, password: String): Result<LoggedInUser> {
-        try {
+        return try {
             // TODO: handle loggedInUser authentication
-            val fakeUser = LoggedInUser(java.util.UUID.randomUUID().toString(), "Jane Doe")
-            return Result.Success(fakeUser)
+            val fakeUser = LoggedInUser(java.util.UUID.randomUUID().toString(), username)
+            Result.Success(fakeUser)
         } catch (e: Throwable) {
-            return Result.Error(IOException("Error logging in", e))
+            Result.Error(IOException("Error logging in", e))
         }
     }
 
     fun logout() {
         // TODO: revoke authentication
+        Logger.getLogger("LoginDataSoure").info("Logout user")
     }
 }
 
