@@ -1,4 +1,4 @@
-package com.github.emerson.pokemon.ui.main
+package com.github.emerson.pokemon.ui.main.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
 import com.github.emerson.pokemon.R
+import com.github.emerson.pokemon.ui.main.viewmodel.PokemonDetailViewModel
 import kotlinx.android.synthetic.main.detail_fragment.*
 
 class DetailFragment : Fragment() {
@@ -31,7 +32,7 @@ class DetailFragment : Fragment() {
     }
 
     private fun configureObserver() {
-        viewModel.pokemon.observe(viewLifecycleOwner, Observer {pokemon ->
+        viewModel.pokemon.observe(viewLifecycleOwner, Observer { pokemon ->
             pokemon.apply {
                 detail_pokemon_name.text = name
             }

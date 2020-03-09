@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/listFragment"
-        android:name="com.github.emerson.pokemon.ui.main.ListFragment"
+        android:name="com.github.emerson.pokemon.ui.main.fragment.ListFragment"
         android:label="ListFragment"
         tools:layout="@layout/list_fragment">
         <action
@@ -20,7 +20,7 @@
     </fragment>
     <fragment
         android:id="@+id/detailFragment"
-        android:name="com.github.emerson.pokemon.ui.main.DetailFragment"
+        android:name="com.github.emerson.pokemon.ui.main.fragment.DetailFragment"
         android:label="DetailFragment"
         tools:layout="@layout/detail_fragment">
         <argument

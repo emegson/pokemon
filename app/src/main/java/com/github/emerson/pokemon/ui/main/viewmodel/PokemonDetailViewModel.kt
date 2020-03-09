@@ -1,4 +1,4 @@
-package com.github.emerson.pokemon.ui.main
+package com.github.emerson.pokemon.ui.main.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

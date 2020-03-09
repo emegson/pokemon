@@ -6,10 +6,11 @@ import android.os.Parcelable
 data class Pokemon(
     val id: Int = -1,
     val name: String = "noname",
+    val types: Any,
     val principalType: String = "unknown",
     val secondaryType: String = "unknown",
-    val imageUrl: String = ""
-) : Parcelable {
+    val sprites: Any = ""
+) : Parcelable, Comparable<Pokemon> {
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
         parcel.readString() ?: "noname",
@@ -24,7 +25,6 @@ data class Pokemon(
         parcel.writeString(name)
         parcel.writeString(principalType)
         parcel.writeString(secondaryType)
-        parcel.writeString(imageUrl)
     }
 
     override fun describeContents(): Int {
@@ -39,5 +39,22 @@ data class Pokemon(
         override fun newArray(size: Int): Array<Pokemon?> {
             return arrayOfNulls(size)
         }
+    }
+
+    override fun compareTo(other: Pokemon) = this.id - other.id
+
+    override fun equals(other: Any?): Boolean {
+        return when(other) {
+            is Pokemon -> this.id == other.id
+            else -> super.equals(other)
+        }
+    }
+
+    override fun hashCode(): Int {
+        return super.hashCode()
+    }
+
+    override fun toString(): String {
+        return "${this.id} - ${this.name}"
     }
 }

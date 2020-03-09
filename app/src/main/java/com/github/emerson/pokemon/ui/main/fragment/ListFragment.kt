@@ -1,4 +1,4 @@
-package com.github.emerson.pokemon.ui.main
+package com.github.emerson.pokemon.ui.main.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,18 +8,23 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.github.emerson.pokemon.R
-import kotlinx.android.synthetic.main.activity_login.*
+import com.github.emerson.pokemon.ui.main.adapter.EndlessRecyclerViewScrollListener
+import com.github.emerson.pokemon.ui.main.adapter.PokemonListAdapter
+import com.github.emerson.pokemon.ui.main.viewmodel.PokemonViewModel
 import kotlinx.android.synthetic.main.list_fragment.*
 
 class ListFragment : Fragment() {
 
     companion object {
-        fun newInstance() = ListFragment()
+        fun newInstance() =
+            ListFragment()
     }
 
     private lateinit var viewModel: PokemonViewModel
-    private val pokemonListAdapter = PokemonListAdapter(arrayListOf())
+    private val pokemonListAdapter =
+        PokemonListAdapter(arrayListOf())
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,17 +40,22 @@ class ListFragment : Fragment() {
         pokemon_list.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = pokemonListAdapter
+            addOnScrollListener(object: EndlessRecyclerViewScrollListener(this.layoutManager as LinearLayoutManager){
+                override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
+                    viewModel.refresh(totalItemsCount)
+                }
+            })
         }
 
         list_swipe_refresh.setOnRefreshListener {
             error_message.visibility = View.GONE
             pokemon_list.visibility = View.GONE
-            pokemon_list_loading.visibility = View.VISIBLE
-            viewModel.refresh()
-            list_swipe_refresh.isRefreshing = false
+            viewModel.refresh(pokemonListAdapter.itemCount)
+
+            list_swipe_refresh.isRefreshing = true
         }
 
-        viewModel.refresh()
+        viewModel.refresh(0)
 
         observeViewModel()
     }
@@ -61,14 +71,7 @@ class ListFragment : Fragment() {
     private fun configureErrorLiveData() {
         viewModel.loadError.observe(viewLifecycleOwner, Observer { isError ->
             isError?.let {
-                if (it) {
-                    error_message.visibility = View.VISIBLE
-                    pokemon_list_loading.visibility = View.GONE
-                    pokemon_list.visibility = View.GONE
-                } else {
-                    error_message.visibility = View.GONE
-                    pokemon_list.visibility = View.VISIBLE
-                }
+                error_message.visibility = if(it) View.VISIBLE else View.GONE
             }
         })
     }
@@ -76,13 +79,7 @@ class ListFragment : Fragment() {
     private fun configureLoadingLiveData() {
         viewModel.loading.observe(viewLifecycleOwner, Observer { isLoading ->
             isLoading?.let {
-                pokemon_list_loading.visibility = if (it) View.VISIBLE else View.GONE
-                if (it) {
-                    error_message.visibility = View.GONE
-                    pokemon_list.visibility = View.GONE
-                } else {
-                    pokemon_list.visibility = View.VISIBLE
-                }
+                list_swipe_refresh.isRefreshing = it
             }
         })
     }
