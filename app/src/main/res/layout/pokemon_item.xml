@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.github.emerson.pokemon.ui.main.adapter.ButtonMaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/Widget.MaterialComponents.CardView"
@@ -15,14 +15,16 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:contentDescription="POKEMONPORRA"
         android:minHeight="148dp">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/secondary_type"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:gravity="center_vertical"
             android:layout_marginBottom="16dp"
+            android:gravity="center_vertical"
+            android:importantForAccessibility="no"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/principal_type"
             app:layout_constraintHorizontal_bias="0.0"
@@ -35,11 +37,12 @@
             android:id="@+id/principal_type"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:gravity="center_vertical"
+            android:layout_marginStart="0dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginStart="0dp"
             android:layout_marginBottom="8dp"
+            android:gravity="center_vertical"
+            android:importantForAccessibility="no"
             app:layout_constraintBottom_toTopOf="@+id/secondary_type"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_weight="2"
@@ -51,8 +54,9 @@
             android:id="@+id/pokemon_name"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:gravity="center_vertical"
             android:layout_margin="16dp"
+            android:gravity="center_vertical"
+            android:importantForAccessibility="no"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/principal_type"
             app:layout_constraintHorizontal_weight="4"
@@ -66,6 +70,7 @@
             android:layout_height="0dp"
             android:layout_margin="16dp"
             android:gravity="center"
+            android:importantForAccessibility="no"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/pokemon_name"
             app:layout_constraintHorizontal_weight="3"
@@ -73,4 +78,4 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@drawable/ic_launcher_background" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-</com.google.android.material.card.MaterialCardView>
+</com.github.emerson.pokemon.ui.main.adapter.ButtonMaterialCardView>

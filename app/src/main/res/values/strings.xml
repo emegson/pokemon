@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Pokemon</string>
-    <string name="title_activity_login">Sign in</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign in or register</string>
@@ -9,4 +8,12 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+    <string name="firstTypeAccesibility">of the %s type</string>
+    <string name="secondTypeAccesibility">but also %s</string>
+    <string name="title_activity_login">Sign in</string>
+    <string name="detail_pokemon_name">Name</string>
+    <string name="detail_pokemon_secondary_type_label">Secondary Type</string>
+    <string name="detail_pokemon_principal_type_label">Principal Type</string>
+    <string name="detail_pokemon_weight_label">Weight</string>
+    <string name="detail_pokemon_name_height">Height</string>
 </resources>

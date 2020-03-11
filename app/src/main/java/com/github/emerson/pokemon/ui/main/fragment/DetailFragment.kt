@@ -10,6 +10,8 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
 import com.github.emerson.pokemon.R
 import com.github.emerson.pokemon.ui.main.viewmodel.PokemonDetailViewModel
+import com.github.emerson.pokemon.util.getProgressDrawable
+import com.github.emerson.pokemon.util.loadImage
 import kotlinx.android.synthetic.main.detail_fragment.*
 
 class DetailFragment : Fragment() {
@@ -35,6 +37,16 @@ class DetailFragment : Fragment() {
         viewModel.pokemon.observe(viewLifecycleOwner, Observer { pokemon ->
             pokemon.apply {
                 detail_pokemon_name.text = name
+                detail_pokemon_image.loadImage(getImage(), getProgressDrawable(this@DetailFragment.context!!))
+                detail_pokemon_principal_type.text = getPrincipalType()
+                detail_pokemon_secondary_type.text = getSecondaryType()
+                detail_pokemon_weight.text = height.toString()
+                detail_pokemon_height.text = weight.toString()
+                detail_pokemon_name3.text = name
+                detail_pokemon_name4.text = name
+                detail_pokemon_name5.text = name
+                detail_pokemon_name6.text = name
+                detail_pokemon_name7.text = name
             }
 
         })

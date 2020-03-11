@@ -10,7 +10,7 @@ import com.github.emerson.pokemon.data.model.Pokemon
 import com.github.emerson.pokemon.ui.main.fragment.ListFragmentDirections
 import com.github.emerson.pokemon.util.getProgressDrawable
 import com.github.emerson.pokemon.util.loadImage
-import com.google.gson.internal.LinkedTreeMap
+import com.google.android.material.card.MaterialCardView
 import kotlinx.android.synthetic.main.pokemon_item.view.*
 
 class PokemonListAdapter(private val pokemonList: ArrayList<Pokemon>) :
@@ -24,7 +24,8 @@ class PokemonListAdapter(private val pokemonList: ArrayList<Pokemon>) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PokemonViewHolder {
         val itemView =
-            LayoutInflater.from(parent.context).inflate(R.layout.pokemon_item, parent, false)
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.pokemon_item, parent, false) as ButtonMaterialCardView
         return PokemonViewHolder(
             itemView
         )
@@ -38,29 +39,50 @@ class PokemonListAdapter(private val pokemonList: ArrayList<Pokemon>) :
         holder.bind(pokemonList[position])
     }
 
-    class PokemonViewHolder(var view: View) : RecyclerView.ViewHolder(view) {
+    class PokemonViewHolder(var view: MaterialCardView) : RecyclerView.ViewHolder(view) {
         val image = view.pokemon_image
         val name = view.pokemon_name
         val principalType = view.principal_type
-        val secondadaryType = view.secondary_type
+        val secondaryType = view.secondary_type
 
-        fun bind(item: Pokemon){
-            image.loadImage((item.sprites as LinkedTreeMap<String, String>)["front_default"], getProgressDrawable(view.context))
+        fun bind(item: Pokemon) {
+            var principal: String? = null
+            var secondary: String? = null
+
+            image.loadImage(
+                item.getImage(),
+                getProgressDrawable(view.context)
+            )
             name.text = "${item.id} - ${item.name}"
             with((item.types as ArrayList<Any>)) {
-                when(this.size){
-                    0-> {}
-                    1-> {
-                        principalType.text = ((this[0] as LinkedTreeMap<String, Any>)["type"] as LinkedTreeMap<String, Any>)["name"].toString()
-                        secondadaryType.visibility = View.GONE
+                when (this.size) {
+                    0 -> {
                     }
-                    else ->  {
-                        principalType.text = ((this[0] as LinkedTreeMap<String, Any>)["type"] as LinkedTreeMap<String, Any>)["name"].toString()
-                        secondadaryType.text = ((this[1] as LinkedTreeMap<String, Any>)["type"] as LinkedTreeMap<String, Any>)["name"].toString()
+                    1 -> {
+                        principal = item.getPrincipalType()
+                        secondaryType.visibility = View.GONE
+                    }
+                    else -> {
+                        principal = item.getPrincipalType()
+                        secondary = item.getSecondaryType()
+
                     }
                 }
             }
+            principalType.text = principal
+            secondaryType.text = secondary
 
+            val firstTypeAccesibilityText =
+                principal?.let {
+                    view.context.getString(R.string.firstTypeAccesibility, it)
+                }
+            val secondTypeAccesibilityText =
+                secondary?.let {
+                    view.context.getString(R.string.secondTypeAccesibility, it)
+                }
+            view.context.getString(R.string.secondTypeAccesibility) ?: null
+            view.contentDescription =
+                "Pokemon ${item.name} ${firstTypeAccesibilityText} ${secondTypeAccesibilityText}"
             view.setOnClickListener {
                 Navigation.findNavController(it).navigate(
                     ListFragmentDirections.actionListFragmentToDetailFragment(
